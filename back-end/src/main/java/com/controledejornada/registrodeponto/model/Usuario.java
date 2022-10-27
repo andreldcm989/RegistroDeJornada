@@ -5,16 +5,12 @@ import java.util.UUID;
 public class Usuario {
 
     private UUID id;
-    private String nome;
-    private String cpf;
-    private String email;
+    private Pessoa pessoa;
     private String username;
     private String senha;
 
-    public Usuario(String nome, String cpf, String email, String username, String senha) {
-        this.nome = nome;
-        this.cpf = cpf;
-        this.email = email;
+    public Usuario(Pessoa pessoa, String username, String senha) {
+        this.pessoa = pessoa;
         this.username = username;
         this.senha = senha;
     }
@@ -23,24 +19,8 @@ public class Usuario {
         return id;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public Pessoa getPessoa() {
+        return pessoa;
     }
 
     public String getUsername() {
