@@ -1,5 +1,7 @@
 package com.controledejornada.registrodeponto.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Usuario {
@@ -8,6 +10,7 @@ public class Usuario {
     private Pessoa pessoa;
     private String username;
     private String senha;
+    private List<Registro> registros = new ArrayList<>();
 
     public Usuario(Pessoa pessoa, String username, String senha) {
         this.pessoa = pessoa;
@@ -37,6 +40,10 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public void registrarPonto(Registro registro) {
+        registros.add(registro);
     }
 
 }
