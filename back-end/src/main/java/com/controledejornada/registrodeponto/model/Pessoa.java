@@ -2,12 +2,25 @@ package com.controledejornada.registrodeponto.model;
 
 import java.util.UUID;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "tb_pessoa")
 public class Pessoa {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String nome;
     private String cpf;
     private String email;
+
+    @OneToOne(mappedBy = "pessoa")
     private Usuario usuario;
 
     public Pessoa(String nome, String cpf, String email, Usuario usuario) {
