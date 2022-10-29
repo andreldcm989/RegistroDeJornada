@@ -1,7 +1,5 @@
 package com.controledejornada.registrodeponto.model;
 
-import java.util.UUID;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +13,7 @@ public class Pessoa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private int id;
     private String nome;
     private String cpf;
     private String email;
@@ -23,14 +21,13 @@ public class Pessoa {
     @OneToOne(mappedBy = "pessoa")
     private Usuario usuario;
 
-    public Pessoa(String nome, String cpf, String email, Usuario usuario) {
+    public Pessoa(String nome, String cpf, String email) {
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
-        this.usuario = usuario;
     }
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
@@ -60,6 +57,10 @@ public class Pessoa {
 
     public Usuario getUsuario() {
         return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
 }

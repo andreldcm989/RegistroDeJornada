@@ -1,7 +1,6 @@
 package com.controledejornada.registrodeponto.model;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +16,7 @@ public class Registro {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
@@ -31,7 +30,7 @@ public class Registro {
         this.tipoRegistro = tipoRegistro;
     }
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 

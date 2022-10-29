@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-RegistrodepontoApplication<registrodeponto>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.controledejornada.registrodeponto.RegistrodepontoApplication",
+      "projectName": "registrodeponto",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

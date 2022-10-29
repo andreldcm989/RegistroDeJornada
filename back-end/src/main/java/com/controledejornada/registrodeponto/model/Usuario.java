@@ -2,7 +2,6 @@ package com.controledejornada.registrodeponto.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +18,7 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private int id;
 
     @OneToOne
     @JoinColumn(name = "pessoa_id")
@@ -36,7 +35,7 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
@@ -62,6 +61,10 @@ public class Usuario {
 
     public void registrarPonto(Registro registro) {
         registros.add(registro);
+    }
+
+    public void excluirPonto(Registro registro) {
+        registros.remove(registro);
     }
 
 }
