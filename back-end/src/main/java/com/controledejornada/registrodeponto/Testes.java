@@ -32,23 +32,28 @@ public class Testes implements CommandLineRunner {
 
         Pessoa p1 = new Pessoa("André", "01234567890", "teste@gmail.com");
         Usuario u1 = new Usuario(p1, "andreldc", "suporte");
+        Pessoa p2 = new Pessoa("André", "01234567890", "teste@gmail.com");
+        Usuario u2 = new Usuario(p1, "andreldc", "suporte");
 
-        pessoaRepository.save(p1);
-        usuarioRepository.save(u1);
+        pessoaRepository.saveAll(Arrays.asList(p1, p2));
+        usuarioRepository.saveAll(Arrays.asList(u1, u2));
 
         Registro registro1 = new Registro(u1, LocalDateTime.now(), "entrada");
-        Registro registro2 = new Registro(u1, LocalDateTime.now(), "entrada");
-        Registro registro3 = new Registro(u1, LocalDateTime.now(), "entrada");
-        Registro registro4 = new Registro(u1, LocalDateTime.now(), "entrada");
+        Registro registro2 = new Registro(u2, LocalDateTime.now(), "entrada");
+        Registro registro3 = new Registro(u1, LocalDateTime.now(), "saida");
+        Registro registro4 = new Registro(u2, LocalDateTime.now(), "saida");
         u1.registrarPonto(registro1);
-        u1.registrarPonto(registro2);
+        u2.registrarPonto(registro2);
         u1.registrarPonto(registro3);
-        u1.registrarPonto(registro4);
+        u2.registrarPonto(registro4);
 
         registroRepository.saveAll(Arrays.asList(registro1, registro2, registro3, registro4));
 
-        List<Registro> registros = registroRepository.findAllByUsuario(u1.getId());
-        System.out.println(registros);
+        List<Registro> registros = registroRepository.findByUsuario(u1.getId());
+
+        for (Registro r : registros) {
+            System.out.println(r.getHorarioRegistro() + ", usuário: " + r.getUsuario().getId());
+        }
     }
 
 }

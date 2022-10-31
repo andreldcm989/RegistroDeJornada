@@ -21,6 +21,9 @@ public class Pessoa {
     @OneToOne(mappedBy = "pessoa")
     private Usuario usuario;
 
+    public Pessoa() {
+    }
+
     public Pessoa(String nome, String cpf, String email) {
         this.nome = nome;
         this.cpf = cpf;

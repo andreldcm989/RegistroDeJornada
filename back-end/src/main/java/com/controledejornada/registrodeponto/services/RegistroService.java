@@ -15,7 +15,14 @@ public class RegistroService {
     private RegistroRepository repository;
 
     public List<Registro> listarRegistrosPorUsuario(int id) {
-        return repository.findAllByUsuario(id);
+        return repository.findByUsuario(id);
+    }
+
+    public void excluirRegistro(int idRegistro) {
+        Registro reg = repository.getReferenceById(idRegistro);
+        if (reg != null) {
+            repository.deleteById(idRegistro);
+        }
     }
 
 }

@@ -29,6 +29,10 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario")
     private List<Registro> registros = new ArrayList<>();
 
+    public Usuario() {
+
+    }
+
     public Usuario(Pessoa pessoa, String username, String senha) {
         this.pessoa = pessoa;
         this.username = username;

@@ -24,6 +24,9 @@ public class Registro {
     private LocalDateTime horarioRegistro;
     private String tipoRegistro;
 
+    public Registro() {
+    }
+
     public Registro(Usuario usuario, LocalDateTime horarioRegistro, String tipoRegistro) {
         this.usuario = usuario;
         this.horarioRegistro = horarioRegistro;
