@@ -1,6 +1,8 @@
 package com.controledejornada.registrodeponto;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -34,10 +36,19 @@ public class Testes implements CommandLineRunner {
         pessoaRepository.save(p1);
         usuarioRepository.save(u1);
 
-        Registro registro = new Registro(u1, LocalDateTime.now(), "entrada");
-        u1.registrarPonto(registro);
+        Registro registro1 = new Registro(u1, LocalDateTime.now(), "entrada");
+        Registro registro2 = new Registro(u1, LocalDateTime.now(), "entrada");
+        Registro registro3 = new Registro(u1, LocalDateTime.now(), "entrada");
+        Registro registro4 = new Registro(u1, LocalDateTime.now(), "entrada");
+        u1.registrarPonto(registro1);
+        u1.registrarPonto(registro2);
+        u1.registrarPonto(registro3);
+        u1.registrarPonto(registro4);
 
-        registroRepository.save(registro);
+        registroRepository.saveAll(Arrays.asList(registro1, registro2, registro3, registro4));
+
+        List<Registro> registros = registroRepository.findAllByUsuario(u1.getId());
+        System.out.println(registros);
     }
 
 }
