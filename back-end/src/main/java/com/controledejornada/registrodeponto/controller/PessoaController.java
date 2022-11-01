@@ -14,22 +14,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.controledejornada.registrodeponto.model.Pessoa;
+import com.controledejornada.registrodeponto.model.dtos.PessoaDto;
 import com.controledejornada.registrodeponto.services.PessoaService;
 
 @RestController
-@RequestMapping("api/pessoas")
+@RequestMapping(value = "/api/pessoas")
 public class PessoaController {
 
     @Autowired
     private PessoaService pessoaService;
 
     @GetMapping
-    public ResponseEntity<List<Pessoa>> listarPessoas() {
+    public ResponseEntity<List<PessoaDto>> listarPessoas() {
         return ResponseEntity.ok().body(pessoaService.listarPessoas());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Pessoa> buscarPessoaPorId(@PathVariable(name = "id") int id) {
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Pessoa> buscarPessoaPorId(@PathVariable int id) {
         return ResponseEntity.ok().body(pessoaService.buscarPessoaPorId(id));
     }
 
@@ -44,8 +45,7 @@ public class PessoaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Pessoa> editarPessoa(@PathVariable(name = "id") int id, @RequestBody Pessoa pessoa) {
+    public ResponseEntity<PessoaDto> editarPessoa(@PathVariable int id, @RequestBody PessoaDto pessoa) {
         return ResponseEntity.ok().body(pessoaService.editarPessoa(id, pessoa));
     }
-
 }
