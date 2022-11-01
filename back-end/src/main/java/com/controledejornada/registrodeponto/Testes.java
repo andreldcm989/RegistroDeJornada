@@ -2,7 +2,6 @@ package com.controledejornada.registrodeponto;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -30,10 +29,10 @@ public class Testes implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Pessoa p1 = new Pessoa("André", "01234567890", "teste@gmail.com");
+        Pessoa p1 = new Pessoa("André", "01234567890", "andre@gmail.com");
         Usuario u1 = new Usuario(p1, "andreldc", "suporte");
-        Pessoa p2 = new Pessoa("André", "01234567890", "teste@gmail.com");
-        Usuario u2 = new Usuario(p1, "andreldc", "suporte");
+        Pessoa p2 = new Pessoa("Marilia", "990876654433", "marilia@gmail.com");
+        Usuario u2 = new Usuario(p2, "mariliafc", "teste");
 
         pessoaRepository.saveAll(Arrays.asList(p1, p2));
         usuarioRepository.saveAll(Arrays.asList(u1, u2));
@@ -49,11 +48,12 @@ public class Testes implements CommandLineRunner {
 
         registroRepository.saveAll(Arrays.asList(registro1, registro2, registro3, registro4));
 
-        List<Registro> registros = registroRepository.findByUsuario(u1.getId());
+        // List<Registro> registros = registroRepository.findByUsuario(u1.getId());
 
-        for (Registro r : registros) {
-            System.out.println(r.getHorarioRegistro() + ", usuário: " + r.getUsuario().getId());
-        }
+        // for (Registro r : registros) {
+        // System.out.println(r.getHorarioRegistro() + ", usuário: " +
+        // r.getUsuario().getId());
+        // }
     }
 
 }

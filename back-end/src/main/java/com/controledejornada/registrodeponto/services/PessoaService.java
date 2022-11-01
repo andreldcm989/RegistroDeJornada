@@ -26,17 +26,26 @@ public class PessoaService {
                 .orElseThrow(() -> new EntityNotFoundException("Não existe pessoa com este id na base de dados."));
     }
 
-    public Pessoa editarPessoa(Pessoa pessoa) {
-        Pessoa p = repository.getReferenceById(pessoa.getId());
-        BeanUtils.copyProperties(pessoa, p);
+    public Pessoa salvarPessoa(Pessoa pessoa) {
+        return repository.save(pessoa);
+    }
+
+    public Pessoa editarPessoa(int id, Pessoa pessoa) {
+        Pessoa p = repository.getReferenceById(id);
+        p.setNome(pessoa.getNome());
+        p.setCpf(pessoa.getCpf());
+        p.setEmail(pessoa.getEmail());
         repository.save(p);
         return p;
     }
 
-    public void deletePessoa(int id) {
+    public Object excluirPessoa(int id) {
         Pessoa pessoa = buscarPessoaPorId(id);
         if (pessoa != null) {
             repository.deleteById(id);
+            return "pessoa excluída com sucesso!";
         }
+        return "erro ao excluir: usuário não encontrado";
     }
+
 }

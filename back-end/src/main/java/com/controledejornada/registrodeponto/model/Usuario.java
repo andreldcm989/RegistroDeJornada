@@ -3,6 +3,7 @@ package com.controledejornada.registrodeponto.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,8 +13,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-@Table(name = "td_usuario")
+@Table(name = "tb_usuario")
 public class Usuario {
 
     @Id
@@ -21,12 +24,13 @@ public class Usuario {
     private int id;
 
     @OneToOne
+    @JsonIgnore
     @JoinColumn(name = "pessoa_id")
     private Pessoa pessoa;
     private String username;
     private String senha;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Registro> registros = new ArrayList<>();
 
     public Usuario() {
