@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.controledejornada.registrodeponto.model.Pessoa;
 import com.controledejornada.registrodeponto.model.dtos.pessoa.PessoaDtoListar;
 import com.controledejornada.registrodeponto.model.dtos.pessoa.PessoaDtoSalvar;
 import com.controledejornada.registrodeponto.services.PessoaService;
@@ -31,7 +30,7 @@ public class PessoaController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Pessoa> buscarPessoaPorId(@PathVariable int id) {
+    public ResponseEntity<PessoaDtoListar> buscarPessoaPorId(@PathVariable int id) {
         return ResponseEntity.ok().body(pessoaService.buscarPessoaPorId(id));
     }
 

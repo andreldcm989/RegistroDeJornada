@@ -27,9 +27,9 @@ public class PessoaService {
         return dto;
     }
 
-    public Pessoa buscarPessoaPorId(int id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Não existe pessoa com este id na base de dados."));
+    public PessoaDtoListar buscarPessoaPorId(int id) {
+        return new PessoaDtoListar(repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Não existe pessoa com este id na base de dados.")));
     }
 
     public PessoaDtoListar salvarPessoa(PessoaDtoSalvar pessoaDto) {
@@ -49,7 +49,7 @@ public class PessoaService {
     }
 
     public Object excluirPessoa(int id) {
-        Pessoa pessoa = buscarPessoaPorId(id);
+        Pessoa pessoa = repository.getReferenceById(id);
         if (pessoa != null) {
             repository.deleteById(id);
             return "pessoa excluída com sucesso!";
