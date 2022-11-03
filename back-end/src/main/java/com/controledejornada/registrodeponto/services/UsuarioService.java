@@ -8,7 +8,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.controledejornada.registrodeponto.model.Pessoa;
 import com.controledejornada.registrodeponto.model.Usuario;
+import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoListar;
+import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoSalvar;
 import com.controledejornada.registrodeponto.repository.UsuarioRepository;
 
 @Service
@@ -38,5 +41,11 @@ public class UsuarioService {
             return u;
         }
         return "usuario não encontrado";
+    }
+
+    public UsuarioDtoListar salvarUsuario(Pessoa pessoa, UsuarioDtoSalvar usuario) {
+        Usuario u = new Usuario(pessoa, usuario);
+        repository.save(u);
+        return new UsuarioDtoListar(u);
     }
 }

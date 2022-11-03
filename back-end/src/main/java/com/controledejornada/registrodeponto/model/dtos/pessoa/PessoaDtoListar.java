@@ -1,48 +1,38 @@
-package com.controledejornada.registrodeponto.model;
+package com.controledejornada.registrodeponto.model.dtos.pessoa;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import com.controledejornada.registrodeponto.model.Pessoa;
+import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoListar;
 
-import com.controledejornada.registrodeponto.model.dtos.pessoa.PessoaDtoSalvar;
+public class PessoaDtoListar implements Serializable {
 
-@Entity
-@Table(name = "tb_pessoa")
-public class Pessoa implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String nome;
     private String cpf;
     private LocalDate nascimento;
     private String email;
+    private UsuarioDtoListar usuario;
 
-    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
-    private Usuario usuario;
-
-    public Pessoa() {
+    public PessoaDtoListar() {
     }
 
-    public Pessoa(String nome, String cpf, LocalDate nascimento, String email) {
+    public PessoaDtoListar(String nome, String cpf, LocalDate nascimento, String email, UsuarioDtoListar usuario) {
         this.nome = nome;
         this.cpf = cpf;
         this.nascimento = nascimento;
         this.email = email;
+        this.usuario = usuario;
     }
 
-    public Pessoa(PessoaDtoSalvar pessoa) {
+    public PessoaDtoListar(Pessoa pessoa) {
+        id = pessoa.getId();
         nome = pessoa.getNome();
         cpf = pessoa.getCpf();
         nascimento = pessoa.getNascimento();
         email = pessoa.getEmail();
+        usuario = new UsuarioDtoListar(pessoa.getUsuario());
     }
 
     public int getId() {
@@ -61,16 +51,16 @@ public class Pessoa implements Serializable {
         return cpf;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
     public LocalDate getNascimento() {
         return nascimento;
     }
 
     public void setNascimento(LocalDate nascimento) {
         this.nascimento = nascimento;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public String getEmail() {
@@ -81,12 +71,11 @@ public class Pessoa implements Serializable {
         this.email = email;
     }
 
-    public Usuario getUsuario() {
+    public UsuarioDtoListar getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(UsuarioDtoListar usuario) {
         this.usuario = usuario;
     }
-
 }

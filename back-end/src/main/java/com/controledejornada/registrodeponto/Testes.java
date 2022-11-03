@@ -1,5 +1,6 @@
 package com.controledejornada.registrodeponto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -29,9 +30,9 @@ public class Testes implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Pessoa p1 = new Pessoa("André", "01234567890", "andre@gmail.com");
+        Pessoa p1 = new Pessoa("André", "01234567890", LocalDate.of(2000, 1, 20), "andre@gmail.com");
         Usuario u1 = new Usuario(p1, "andreldc", "suporte");
-        Pessoa p2 = new Pessoa("Marilia", "990876654433", "marilia@gmail.com");
+        Pessoa p2 = new Pessoa("Marilia", "990876654433", LocalDate.of(1998, 7, 30), "marilia@gmail.com");
         Usuario u2 = new Usuario(p2, "mariliafc", "teste");
 
         pessoaRepository.saveAll(Arrays.asList(p1, p2));

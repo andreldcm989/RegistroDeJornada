@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoSalvar;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -34,13 +35,18 @@ public class Usuario {
     private List<Registro> registros = new ArrayList<>();
 
     public Usuario() {
-
     }
 
     public Usuario(Pessoa pessoa, String username, String senha) {
         this.pessoa = pessoa;
         this.username = username;
         this.senha = senha;
+    }
+
+    public Usuario(Pessoa pessoa, UsuarioDtoSalvar usuarioDtoSalvar) {
+        this.pessoa = pessoa;
+        this.username = usuarioDtoSalvar.getUsername();
+        this.senha = usuarioDtoSalvar.getSenha();
     }
 
     public int getId() {

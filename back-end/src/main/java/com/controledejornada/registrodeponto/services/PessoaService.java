@@ -5,11 +5,16 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.controledejornada.registrodeponto.model.Pessoa;
-import com.controledejornada.registrodeponto.model.dtos.PessoaDto;
+import com.controledejornada.registrodeponto.model.Usuario;
+import com.controledejornada.registrodeponto.model.dtos.pessoa.PessoaDtoListar;
+import com.controledejornada.registrodeponto.model.dtos.pessoa.PessoaDtoSalvar;
+import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoListar;
+import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoSalvar;
 import com.controledejornada.registrodeponto.repository.PessoaRepository;
 
 @Service
@@ -18,9 +23,12 @@ public class PessoaService {
     @Autowired
     private PessoaRepository repository;
 
-    public List<PessoaDto> listarPessoas() {
+    @Autowired
+    private UsuarioService usuarioService;
+
+    public List<PessoaDtoListar> listarPessoas() {
         List<Pessoa> pessoas = repository.findAll();
-        List<PessoaDto> dto = pessoas.stream().map(p -> new PessoaDto(p)).collect(Collectors.toList());
+        List<PessoaDtoListar> dto = pessoas.stream().map(p -> new PessoaDtoListar(p)).collect(Collectors.toList());
         return dto;
     }
 
@@ -29,17 +37,21 @@ public class PessoaService {
                 .orElseThrow(() -> new EntityNotFoundException("Não existe pessoa com este id na base de dados."));
     }
 
-    public Pessoa salvarPessoa(Pessoa pessoa) {
-        return repository.save(pessoa);
+    public PessoaDtoListar salvarPessoa(PessoaDtoSalvar pessoaDto) {
+        Pessoa p = new Pessoa(pessoaDto);
+        p.setUsuario(new Usuario(p, pessoaDto.getUsuario()));
+        repository.save(p);
+        UsuarioDtoListar usuario = usuarioService.salvarUsuario(p, pessoaDto.getUsuario());
+        PessoaDtoListar dto = new PessoaDtoListar(p);
+        dto.setUsuario(usuario);
+        return dto;
     }
 
-    public PessoaDto editarPessoa(int id, PessoaDto pessoa) {
+    public PessoaDtoListar editarPessoa(int id, PessoaDtoListar pessoa) {
         Pessoa p = repository.getReferenceById(id);
-        p.setNome(pessoa.getNome());
-        p.setCpf(pessoa.getCpf());
-        p.setEmail(pessoa.getEmail());
+        BeanUtils.copyProperties(pessoa, p);
         repository.save(p);
-        PessoaDto dto = new PessoaDto(p);
+        PessoaDtoListar dto = new PessoaDtoListar(p);
         return dto;
     }
 
