@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.controledejornada.registrodeponto.model.dtos.pessoa.PessoaDtoEditar;
 import com.controledejornada.registrodeponto.model.dtos.pessoa.PessoaDtoListar;
 import com.controledejornada.registrodeponto.model.dtos.pessoa.PessoaDtoSalvar;
 import com.controledejornada.registrodeponto.services.PessoaService;
@@ -45,7 +46,7 @@ public class PessoaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PessoaDtoListar> editarPessoa(@PathVariable int id, @RequestBody PessoaDtoListar pessoa) {
+    public ResponseEntity<PessoaDtoListar> editarPessoa(@PathVariable int id, @RequestBody PessoaDtoEditar pessoa) {
         return ResponseEntity.ok().body(pessoaService.editarPessoa(id, pessoa));
     }
 }

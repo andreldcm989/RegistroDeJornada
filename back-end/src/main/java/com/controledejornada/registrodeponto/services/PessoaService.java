@@ -8,9 +8,11 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.controledejornada.registrodeponto.model.Pessoa;
 import com.controledejornada.registrodeponto.model.Usuario;
+import com.controledejornada.registrodeponto.model.dtos.pessoa.PessoaDtoEditar;
 import com.controledejornada.registrodeponto.model.dtos.pessoa.PessoaDtoListar;
 import com.controledejornada.registrodeponto.model.dtos.pessoa.PessoaDtoSalvar;
 import com.controledejornada.registrodeponto.repository.PessoaRepository;
@@ -32,6 +34,7 @@ public class PessoaService {
                 .orElseThrow(() -> new EntityNotFoundException("Não existe pessoa com este id na base de dados.")));
     }
 
+    @Transactional
     public PessoaDtoListar salvarPessoa(PessoaDtoSalvar pessoaDto) {
         Pessoa p = new Pessoa(pessoaDto);
         p.setUsuario(new Usuario(p, pessoaDto.getUsuario()));
@@ -40,7 +43,8 @@ public class PessoaService {
         return dto;
     }
 
-    public PessoaDtoListar editarPessoa(int id, PessoaDtoListar pessoa) {
+    @Transactional
+    public PessoaDtoListar editarPessoa(int id, PessoaDtoEditar pessoa) {
         Pessoa p = repository.getReferenceById(id);
         BeanUtils.copyProperties(pessoa, p);
         repository.save(p);
@@ -48,6 +52,7 @@ public class PessoaService {
         return dto;
     }
 
+    @Transactional
     public Object excluirPessoa(int id) {
         Pessoa pessoa = repository.getReferenceById(id);
         if (pessoa != null) {
