@@ -13,8 +13,6 @@ import com.controledejornada.registrodeponto.model.Pessoa;
 import com.controledejornada.registrodeponto.model.Usuario;
 import com.controledejornada.registrodeponto.model.dtos.pessoa.PessoaDtoListar;
 import com.controledejornada.registrodeponto.model.dtos.pessoa.PessoaDtoSalvar;
-import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoListar;
-import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoSalvar;
 import com.controledejornada.registrodeponto.repository.PessoaRepository;
 
 @Service
@@ -22,9 +20,6 @@ public class PessoaService {
 
     @Autowired
     private PessoaRepository repository;
-
-    @Autowired
-    private UsuarioService usuarioService;
 
     public List<PessoaDtoListar> listarPessoas() {
         List<Pessoa> pessoas = repository.findAll();
@@ -41,9 +36,7 @@ public class PessoaService {
         Pessoa p = new Pessoa(pessoaDto);
         p.setUsuario(new Usuario(p, pessoaDto.getUsuario()));
         repository.save(p);
-        UsuarioDtoListar usuario = usuarioService.salvarUsuario(p, pessoaDto.getUsuario());
         PessoaDtoListar dto = new PessoaDtoListar(p);
-        dto.setUsuario(usuario);
         return dto;
     }
 
