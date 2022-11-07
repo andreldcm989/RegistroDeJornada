@@ -38,16 +38,21 @@ public class Testes implements CommandLineRunner {
         pessoaRepository.saveAll(Arrays.asList(p1, p2));
         usuarioRepository.saveAll(Arrays.asList(u1, u2));
 
-        Registro registro1 = new Registro(u1, LocalDateTime.now(), "entrada");
+        Registro registrou1r1 = new Registro(u1, LocalDateTime.now().minusDays(1).minusHours(6), "entrada");
+        Registro registrou1r2 = new Registro(u1, LocalDateTime.now().minusDays(1).minusHours(2), "entrada");
+        Registro registrou1r3 = new Registro(u1, LocalDateTime.now().minusHours(6), "entrada");
+        Registro registrou1r4 = new Registro(u1, LocalDateTime.now().minusHours(2), "entrada");
         Registro registro2 = new Registro(u2, LocalDateTime.now(), "entrada");
-        Registro registro3 = new Registro(u1, LocalDateTime.now(), "saida");
         Registro registro4 = new Registro(u2, LocalDateTime.now(), "saida");
-        u1.registrarPonto(registro1);
+        u1.registrarPonto(registrou1r1);
+        u1.registrarPonto(registrou1r2);
+        u1.registrarPonto(registrou1r3);
+        u1.registrarPonto(registrou1r4);
         u2.registrarPonto(registro2);
-        u1.registrarPonto(registro3);
         u2.registrarPonto(registro4);
 
-        registroRepository.saveAll(Arrays.asList(registro1, registro2, registro3, registro4));
+        registroRepository
+                .saveAll(Arrays.asList(registrou1r1, registrou1r2, registrou1r3, registrou1r4, registro2, registro4));
 
         // List<Registro> registros = registroRepository.findByUsuario(u1.getId());
 

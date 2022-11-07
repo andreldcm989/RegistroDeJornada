@@ -3,8 +3,6 @@ package com.controledejornada.registrodeponto.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,8 +10,10 @@ import org.springframework.stereotype.Service;
 import com.controledejornada.registrodeponto.model.Pessoa;
 import com.controledejornada.registrodeponto.model.Usuario;
 import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoListar;
+import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoRegistros;
 import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoSalvar;
 import com.controledejornada.registrodeponto.repository.UsuarioRepository;
+import com.controledejornada.registrodeponto.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UsuarioService {
@@ -27,13 +27,14 @@ public class UsuarioService {
         return dto;
     }
 
-    public Usuario buscarUsuarioPorPessoa(int pessoaId) {
-        return repository.findUsuarioByPessoa(pessoaId)
-                .orElseThrow(() -> new EntityNotFoundException("Usuario não encontrado."));
+    public UsuarioDtoRegistros buscarUsuarioPorPessoa(int pessoaId) {
+        Usuario usuario = repository.findUsuarioByPessoa(pessoaId)
+                .orElseThrow(() -> new ResourceNotFoundException(pessoaId));
+        return new UsuarioDtoRegistros(usuario);
     }
 
     public Usuario buscarUsuarioPorId(int id) {
-        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuario não encontrado."));
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public Object editarUsuario(Usuario usuario) {
