@@ -37,7 +37,8 @@ public class PessoaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> excluirPessoa(@PathVariable(name = "id") int id) {
-        return ResponseEntity.ok().body(pessoaService.excluirPessoa(id));
+        pessoaService.excluirPessoa(id);
+        return ResponseEntity.ok().body("Registro excluído com sucesso!");
     }
 
     @PostMapping

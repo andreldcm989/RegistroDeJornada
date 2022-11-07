@@ -3,10 +3,9 @@ package com.controledejornada.registrodeponto.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +15,7 @@ import com.controledejornada.registrodeponto.model.dtos.pessoa.PessoaDtoEditar;
 import com.controledejornada.registrodeponto.model.dtos.pessoa.PessoaDtoListar;
 import com.controledejornada.registrodeponto.model.dtos.pessoa.PessoaDtoSalvar;
 import com.controledejornada.registrodeponto.repository.PessoaRepository;
+import com.controledejornada.registrodeponto.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class PessoaService {
@@ -31,7 +31,7 @@ public class PessoaService {
 
     public PessoaDtoListar buscarPessoaPorId(int id) {
         return new PessoaDtoListar(repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Não existe pessoa com este id na base de dados.")));
+                .orElseThrow(() -> new ResourceNotFoundException(id)));
     }
 
     @Transactional
@@ -53,13 +53,12 @@ public class PessoaService {
     }
 
     @Transactional
-    public Object excluirPessoa(int id) {
-        Pessoa pessoa = repository.getReferenceById(id);
-        if (pessoa != null) {
+    public void excluirPessoa(int id) {
+        try {
             repository.deleteById(id);
-            return "pessoa excluída com sucesso!";
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(id);
         }
-        return "erro ao excluir: usuário não encontrado";
     }
 
 }
