@@ -73,6 +73,10 @@ public class Usuario {
         this.senha = senha;
     }
 
+    public List<Registro> getRegistros() {
+        return registros;
+    }
+
     public void registrarPonto(Registro registro) {
         registros.add(registro);
     }
