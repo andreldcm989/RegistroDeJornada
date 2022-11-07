@@ -1,6 +1,7 @@
 package com.controledejornada.registrodeponto.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -20,8 +21,10 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository repository;
 
-    public List<Usuario> buscarUsuarios() {
-        return repository.findAll();
+    public List<UsuarioDtoListar> buscarUsuarios() {
+        List<UsuarioDtoListar> dto = repository.findAll().stream().map(u -> new UsuarioDtoListar(u))
+                .collect(Collectors.toList());
+        return dto;
     }
 
     public Usuario buscarUsuarioPorPessoa(int pessoaId) {

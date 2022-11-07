@@ -8,6 +8,7 @@ public class UsuarioDtoListar implements Serializable {
 
     private int id;
     private String username;
+    private Integer pessoaId;
 
     public UsuarioDtoListar() {
     }
@@ -15,6 +16,7 @@ public class UsuarioDtoListar implements Serializable {
     public UsuarioDtoListar(Usuario usuario) {
         id = usuario.getId();
         username = usuario.getUsername();
+        pessoaId = usuario.getPessoa().getId();
     }
 
     public int getId() {
@@ -25,4 +27,7 @@ public class UsuarioDtoListar implements Serializable {
         return username;
     }
 
+    public Integer getPessoaId() {
+        return pessoaId;
+    }
 }
