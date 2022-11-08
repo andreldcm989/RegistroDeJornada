@@ -1,5 +1,6 @@
 package com.controledejornada.registrodeponto.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,29 +20,37 @@ import com.controledejornada.registrodeponto.services.exceptions.ResourceNotFoun
 public class UsuarioService {
 
     @Autowired
-    private UsuarioRepository repository;
+    private UsuarioRepository usuarioRepository;
 
     public List<UsuarioDtoListar> buscarUsuarios() {
-        List<UsuarioDtoListar> dto = repository.findAll().stream().map(u -> new UsuarioDtoListar(u))
+        List<UsuarioDtoListar> dto = usuarioRepository.findAll().stream().map(u -> new UsuarioDtoListar(u))
                 .collect(Collectors.toList());
         return dto;
     }
 
     public UsuarioDtoRegistros buscarUsuarioPorPessoa(int pessoaId) {
-        Usuario usuario = repository.findUsuarioByPessoa(pessoaId)
+        Usuario usuario = usuarioRepository.findUsuarioByPessoa(pessoaId)
                 .orElseThrow(() -> new ResourceNotFoundException(pessoaId));
         return new UsuarioDtoRegistros(usuario);
     }
 
+    public UsuarioDtoRegistros registrosDiarioPorUsuario(int idPessoa, String intervalo) {
+        UsuarioDtoRegistros dto = buscarUsuarioPorPessoa(idPessoa);
+        dto.setRegistros(dto.getRegistros().stream()
+                .filter(r -> r.getHorarioRegistro().toLocalDate().isAfter(LocalDate.parse(intervalo)))
+                .collect(Collectors.toList()));
+        return dto;
+    }
+
     public Usuario buscarUsuarioPorId(int id) {
-        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        return usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public Object editarUsuario(Usuario usuario) {
-        Usuario u = repository.getReferenceById(usuario.getId());
+        Usuario u = usuarioRepository.getReferenceById(usuario.getId());
         if (u != null) {
             BeanUtils.copyProperties(usuario, u);
-            repository.save(u);
+            usuarioRepository.save(u);
             return u;
         }
         return "usuario não encontrado";
@@ -49,7 +58,7 @@ public class UsuarioService {
 
     public UsuarioDtoListar salvarUsuario(Pessoa pessoa, UsuarioDtoSalvar usuario) {
         Usuario u = new Usuario(pessoa, usuario);
-        repository.save(u);
+        usuarioRepository.save(u);
         return new UsuarioDtoListar(u);
     }
 }

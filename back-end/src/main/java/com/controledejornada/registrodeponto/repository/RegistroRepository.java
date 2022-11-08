@@ -12,4 +12,7 @@ public interface RegistroRepository extends JpaRepository<Registro, Integer> {
     @Query(nativeQuery = true, value = "SELECT * FROM tb_registro WHERE usuario_id = :id")
     public List<Registro> findByUsuario(int id);
 
+    @Query(nativeQuery = true, value = "SELECT * FROM tb_usuario WHERE usuario_id = :id AND horarioRegistro LIKE '%:data%'")
+    List<Registro> findRegistrosByUsuario(int id, String data);
+
 }

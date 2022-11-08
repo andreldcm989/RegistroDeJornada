@@ -40,4 +40,8 @@ public class UsuarioDtoRegistros implements Serializable {
     public List<RegistroDtoListar> getRegistros() {
         return registros;
     }
+
+    public void setRegistros(List<RegistroDtoListar> registros) {
+        this.registros = registros;
+    }
 }
