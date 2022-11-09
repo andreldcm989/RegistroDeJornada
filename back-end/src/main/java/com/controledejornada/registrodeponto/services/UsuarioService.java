@@ -29,7 +29,7 @@ public class UsuarioService {
     }
 
     public UsuarioDtoRegistros buscarUsuarioPorPessoa(int pessoaId) {
-        Usuario usuario = usuarioRepository.findUsuarioByPessoa(pessoaId)
+        Usuario usuario = usuarioRepository.findByPessoaId(pessoaId)
                 .orElseThrow(() -> new ResourceNotFoundException(pessoaId));
         return new UsuarioDtoRegistros(usuario);
     }
@@ -61,4 +61,5 @@ public class UsuarioService {
         usuarioRepository.save(u);
         return new UsuarioDtoListar(u);
     }
+
 }

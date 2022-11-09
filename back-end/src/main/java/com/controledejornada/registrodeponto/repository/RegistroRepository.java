@@ -1,18 +1,16 @@
 package com.controledejornada.registrodeponto.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import com.controledejornada.registrodeponto.model.Registro;
 
 public interface RegistroRepository extends JpaRepository<Registro, Integer> {
 
-    @Query(nativeQuery = true, value = "SELECT * FROM tb_registro WHERE usuario_id = :id")
-    public List<Registro> findByUsuario(int id);
+    public List<Registro> findByUsuarioId(int id);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM tb_usuario WHERE usuario_id = :id AND horarioRegistro LIKE '%:data%'")
-    List<Registro> findRegistrosByUsuario(int id, String data);
+    public List<Registro> findByUsuarioIdAndHorarioRegistroBetween(int id, LocalDateTime inicio, LocalDateTime fim);
 
 }

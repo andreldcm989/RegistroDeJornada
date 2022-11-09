@@ -53,6 +53,7 @@ public class Testes implements CommandLineRunner {
 
         registroRepository
                 .saveAll(Arrays.asList(registrou1r1, registrou1r2, registrou1r3, registrou1r4, registro2, registro4));
+        System.out.println(registro2.getHorarioRegistro());
 
         // List<Registro> registros = registroRepository.findByUsuario(u1.getId());
 
