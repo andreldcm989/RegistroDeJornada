@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
+import com.controledejornada.registrodeponto.model.Jornada;
 import com.controledejornada.registrodeponto.model.Pessoa;
 import com.controledejornada.registrodeponto.model.Usuario;
+import com.controledejornada.registrodeponto.repository.JornadaRepository;
 import com.controledejornada.registrodeponto.repository.PessoaRepository;
 import com.controledejornada.registrodeponto.repository.UsuarioRepository;
 
@@ -21,6 +23,9 @@ public class Testes implements CommandLineRunner {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private JornadaRepository jornadaRepository;
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -31,6 +36,18 @@ public class Testes implements CommandLineRunner {
 
         pessoaRepository.saveAll(Arrays.asList(p1, p2));
         usuarioRepository.saveAll(Arrays.asList(u1, u2));
+
+        Jornada j1 = new Jornada(LocalDate.of(2022, 11, 1), u1);
+        Jornada j2 = new Jornada(LocalDate.of(2022, 11, 2), u1);
+        Jornada j3 = new Jornada(LocalDate.of(2022, 11, 3), u1);
+        Jornada j4 = new Jornada(LocalDate.of(2022, 11, 4), u1);
+
+        // u1.addJornada(j1);
+        // u1.addJornada(j2);
+        // u1.addJornada(j3);
+        // u1.addJornada(j4);
+
+        jornadaRepository.saveAll(Arrays.asList(j1, j2, j3, j4));
 
         // List<Registro> registros = registroRepository.findByUsuario(u1.getId());
 

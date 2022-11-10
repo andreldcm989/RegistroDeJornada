@@ -14,6 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoSalvar;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_usuario")
@@ -25,11 +26,13 @@ public class Usuario {
 
     @OneToOne
     @JoinColumn(name = "pessoa_id")
+    @JsonIgnore
     private Pessoa pessoa;
     private String username;
     private String senha;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Jornada> jornadas = new ArrayList<>();
 
     public Usuario() {
@@ -71,8 +74,12 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public List<Jornada> getRegistros() {
+    public List<Jornada> getJornadas() {
         return jornadas;
+    }
+
+    public void addJornada(Jornada jornada) {
+        jornadas.add(jornada);
     }
 
 }

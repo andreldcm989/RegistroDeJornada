@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_registro")
 public class Registro {
@@ -19,6 +21,7 @@ public class Registro {
     private int id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "jornada_id")
     private Jornada jornada;
     private LocalTime horarioRegistro;
