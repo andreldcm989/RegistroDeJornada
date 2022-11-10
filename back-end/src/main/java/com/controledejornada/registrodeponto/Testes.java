@@ -1,6 +1,7 @@
 package com.controledejornada.registrodeponto;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +10,11 @@ import org.springframework.context.annotation.Configuration;
 
 import com.controledejornada.registrodeponto.model.Jornada;
 import com.controledejornada.registrodeponto.model.Pessoa;
+import com.controledejornada.registrodeponto.model.Registro;
 import com.controledejornada.registrodeponto.model.Usuario;
 import com.controledejornada.registrodeponto.repository.JornadaRepository;
 import com.controledejornada.registrodeponto.repository.PessoaRepository;
+import com.controledejornada.registrodeponto.repository.RegistroRepository;
 import com.controledejornada.registrodeponto.repository.UsuarioRepository;
 
 @Configuration
@@ -25,6 +28,9 @@ public class Testes implements CommandLineRunner {
 
     @Autowired
     private JornadaRepository jornadaRepository;
+
+    @Autowired
+    private RegistroRepository registroRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -42,12 +48,21 @@ public class Testes implements CommandLineRunner {
         Jornada j3 = new Jornada(LocalDate.of(2022, 11, 3), u1);
         Jornada j4 = new Jornada(LocalDate.of(2022, 11, 4), u1);
 
-        // u1.addJornada(j1);
-        // u1.addJornada(j2);
-        // u1.addJornada(j3);
-        // u1.addJornada(j4);
-
         jornadaRepository.saveAll(Arrays.asList(j1, j2, j3, j4));
+
+        Registro r1 = new Registro(j1, LocalTime.of(8, 0, 0), "entrada");
+        Registro r2 = new Registro(j1, LocalTime.of(12, 0, 0), "saida");
+        Registro r3 = new Registro(j1, LocalTime.of(17, 0, 0), "saida");
+        Registro r4 = new Registro(j1, LocalTime.of(13, 0, 0), "entrada");
+
+        registroRepository.saveAll(Arrays.asList(r4, r2, r1, r3));
+        j1.addRegistro(r1);
+        j1.addRegistro(r2);
+        j1.addRegistro(r3);
+        j1.addRegistro(r4);
+
+        j1.calcularHorasTrabalhadas();
+        jornadaRepository.save(j1);
 
         // List<Registro> registros = registroRepository.findByUsuario(u1.getId());
 

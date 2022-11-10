@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -40,7 +41,7 @@ public class Jornada implements Serializable {
     public Jornada(LocalDate data, Usuario usuario) {
         this.data = data;
         this.usuario = usuario;
-        this.horasTrabalhadas = LocalTime.of(0, 0, 0);
+        calcularHorasTrabalhadas();
     }
 
     public int getId() {
@@ -65,16 +66,15 @@ public class Jornada implements Serializable {
 
     public void addRegistro(Registro registro) {
         registros.add(registro);
-        horasTrabalhadas = calcularHorasTrabalhadas();
     }
 
     public void removeRegistro(Registro registro) {
         registros.remove(registro);
-        horasTrabalhadas = calcularHorasTrabalhadas();
     }
 
     public LocalTime calcularHorasTrabalhadas() {
         LocalTime total = LocalTime.of(0, 0, 0);
+        Collections.sort(registros);
         for (int i = 0; i < registros.size(); i++) {
             if (i % 2 != 0) {
                 total = total.plus(
@@ -83,6 +83,7 @@ public class Jornada implements Serializable {
                         ChronoUnit.MILLIS);
             }
         }
+        horasTrabalhadas = total;
         return total;
     }
 

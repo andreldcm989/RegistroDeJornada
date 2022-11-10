@@ -1,5 +1,6 @@
 package com.controledejornada.registrodeponto.model;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 
 import javax.persistence.Entity;
@@ -14,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_registro")
-public class Registro {
+public class Registro implements Serializable, Comparable<Registro> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,6 +51,11 @@ public class Registro {
 
     public String getTipoRegistro() {
         return tipoRegistro;
+    }
+
+    @Override
+    public int compareTo(Registro r) {
+        return this.getHorarioRegistro().compareTo(r.getHorarioRegistro());
     }
 
 }
