@@ -18,8 +18,8 @@ public class JornadaService {
     private JornadaRepository jornadaRepository;
 
     public List<Jornada> listarJornadasPorUsuarioEData(int usuarioId, String inicio, String fim) {
-        LocalDate i = LocalDate.parse(inicio, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        LocalDate f = LocalDate.parse(fim, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate i = LocalDate.parse(inicio, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalDate f = LocalDate.parse(fim, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         return jornadaRepository.findByUsuarioIdAndDataBetween(usuarioId, i, f);
     }
 
