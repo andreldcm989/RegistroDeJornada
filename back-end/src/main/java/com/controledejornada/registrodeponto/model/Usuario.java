@@ -30,7 +30,7 @@ public class Usuario {
     private String senha;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private List<Registro> registros = new ArrayList<>();
+    private List<Jornada> jornadas = new ArrayList<>();
 
     public Usuario() {
     }
@@ -71,16 +71,8 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public List<Registro> getRegistros() {
-        return registros;
-    }
-
-    public void registrarPonto(Registro registro) {
-        registros.add(registro);
-    }
-
-    public void excluirPonto(Registro registro) {
-        registros.remove(registro);
+    public List<Jornada> getRegistros() {
+        return jornadas;
     }
 
 }

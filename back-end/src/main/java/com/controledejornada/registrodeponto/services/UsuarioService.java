@@ -1,6 +1,5 @@
 package com.controledejornada.registrodeponto.services;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,14 +31,6 @@ public class UsuarioService {
         Usuario usuario = usuarioRepository.findByPessoaId(pessoaId)
                 .orElseThrow(() -> new ResourceNotFoundException(pessoaId));
         return new UsuarioDtoRegistros(usuario);
-    }
-
-    public UsuarioDtoRegistros registrosDiarioPorUsuario(int idPessoa, String intervalo) {
-        UsuarioDtoRegistros dto = buscarUsuarioPorPessoa(idPessoa);
-        dto.setRegistros(dto.getRegistros().stream()
-                .filter(r -> r.getHorarioRegistro().toLocalDate().isAfter(LocalDate.parse(intervalo)))
-                .collect(Collectors.toList()));
-        return dto;
     }
 
     public Usuario buscarUsuarioPorId(int id) {
