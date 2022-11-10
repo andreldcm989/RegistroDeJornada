@@ -1,6 +1,6 @@
 package com.controledejornada.registrodeponto.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,16 +19,16 @@ public class Registro {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
-    private LocalDateTime horarioRegistro;
+    @JoinColumn(name = "jornada_id")
+    private Jornada jornada;
+    private LocalTime horarioRegistro;
     private String tipoRegistro;
 
     public Registro() {
     }
 
-    public Registro(Usuario usuario, LocalDateTime horarioRegistro, String tipoRegistro) {
-        this.usuario = usuario;
+    public Registro(Jornada jornada, LocalTime horarioRegistro, String tipoRegistro) {
+        this.jornada = jornada;
         this.horarioRegistro = horarioRegistro;
         this.tipoRegistro = tipoRegistro;
     }
@@ -37,11 +37,11 @@ public class Registro {
         return id;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public Jornada getJornada() {
+        return jornada;
     }
 
-    public LocalDateTime getHorarioRegistro() {
+    public LocalTime getHorarioRegistro() {
         return horarioRegistro;
     }
 
