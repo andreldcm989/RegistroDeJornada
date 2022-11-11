@@ -3,12 +3,12 @@ package com.controledejornada.registrodeponto.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.controledejornada.registrodeponto.model.Pessoa;
 import com.controledejornada.registrodeponto.model.Usuario;
+import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoEditar;
 import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoListar;
 import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoRegistros;
 import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoSalvar;
@@ -33,18 +33,19 @@ public class UsuarioService {
         return new UsuarioDtoRegistros(usuario);
     }
 
-    public Usuario buscarUsuarioPorId(int id) {
-        return usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+    public UsuarioDtoRegistros buscarUsuarioPorId(int id) {
+        Usuario u = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        return new UsuarioDtoRegistros(u);
     }
 
-    public Object editarUsuario(Usuario usuario) {
-        Usuario u = usuarioRepository.getReferenceById(usuario.getId());
-        if (u != null) {
-            BeanUtils.copyProperties(usuario, u);
+    public UsuarioDtoListar editarUsuario(int id, UsuarioDtoEditar usuario) {
+        if (usuarioRepository.existsById(id)) {
+            Usuario u = usuarioRepository.getReferenceById(id);
+            u.setUsername(usuario.getUsername());
             usuarioRepository.save(u);
-            return u;
+            return new UsuarioDtoListar(u);
         }
-        return "usuario não encontrado";
+        throw new ResourceNotFoundException(id);
     }
 
     public UsuarioDtoListar salvarUsuario(Pessoa pessoa, UsuarioDtoSalvar usuario) {

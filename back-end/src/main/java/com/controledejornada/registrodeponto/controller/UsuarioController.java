@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoEditar;
 import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoListar;
 import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoRegistros;
 import com.controledejornada.registrodeponto.services.UsuarioService;
@@ -25,9 +28,15 @@ public class UsuarioController {
         return ResponseEntity.ok().body(usuarioService.buscarUsuarios());
     }
 
-    @GetMapping("/{idPessoa}")
-    public ResponseEntity<UsuarioDtoRegistros> buscarUsuarioPorPessoa(@PathVariable int idPessoa) {
-        return ResponseEntity.ok().body(usuarioService.buscarUsuarioPorPessoa(idPessoa));
+    @GetMapping("/{idUsuario}")
+    public ResponseEntity<UsuarioDtoRegistros> buscarUsuarioPorPessoa(@PathVariable int idUsuario) {
+        return ResponseEntity.ok().body(usuarioService.buscarUsuarioPorId(idUsuario));
+    }
+
+    @PutMapping("/{idUsuario}")
+    public ResponseEntity<UsuarioDtoListar> editarUsuario(@PathVariable int idUsuario,
+            @RequestBody UsuarioDtoEditar usuario) {
+        return ResponseEntity.ok().body(usuarioService.editarUsuario(idUsuario, usuario));
     }
 
 }
