@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.controledejornada.registrodeponto.model.Pessoa;
 import com.controledejornada.registrodeponto.model.Usuario;
@@ -38,6 +40,7 @@ public class UsuarioService {
         return new UsuarioDtoRegistros(u);
     }
 
+    @Transactional
     public UsuarioDtoListar editarUsuario(int id, UsuarioDtoEditar usuario) {
         if (usuarioRepository.existsById(id)) {
             Usuario u = usuarioRepository.getReferenceById(id);
@@ -48,10 +51,20 @@ public class UsuarioService {
         throw new ResourceNotFoundException(id);
     }
 
+    @Transactional
     public UsuarioDtoListar salvarUsuario(Pessoa pessoa, UsuarioDtoSalvar usuario) {
         Usuario u = new Usuario(pessoa, usuario);
         usuarioRepository.save(u);
         return new UsuarioDtoListar(u);
+    }
+
+    @Transactional
+    public void excluirUsuario(int id) {
+        try {
+            usuarioRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(id);
+        }
     }
 
 }

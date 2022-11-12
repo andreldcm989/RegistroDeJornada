@@ -23,6 +23,9 @@ public class PessoaService {
     @Autowired
     private PessoaRepository repository;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     public List<PessoaDtoListar> listarPessoas() {
         List<Pessoa> pessoas = repository.findAll();
         List<PessoaDtoListar> dto = pessoas.stream().map(p -> new PessoaDtoListar(p)).collect(Collectors.toList());
@@ -55,6 +58,7 @@ public class PessoaService {
     @Transactional
     public void excluirPessoa(int id) {
         try {
+            usuarioService.excluirUsuario(repository.getReferenceById(id).getUsuario().getId());
             repository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException(id);

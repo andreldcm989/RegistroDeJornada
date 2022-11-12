@@ -3,7 +3,6 @@ package com.controledejornada.registrodeponto.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,7 +24,7 @@ public class Pessoa implements Serializable {
     private LocalDate nascimento;
     private String email;
 
-    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "pessoa")
     private Usuario usuario;
 
     public Pessoa() {
