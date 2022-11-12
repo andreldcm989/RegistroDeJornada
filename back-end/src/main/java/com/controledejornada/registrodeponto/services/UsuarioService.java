@@ -12,7 +12,6 @@ import com.controledejornada.registrodeponto.model.Pessoa;
 import com.controledejornada.registrodeponto.model.Usuario;
 import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoEditar;
 import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoListar;
-import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoRegistros;
 import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoSalvar;
 import com.controledejornada.registrodeponto.repository.UsuarioRepository;
 import com.controledejornada.registrodeponto.services.exceptions.ResourceNotFoundException;
@@ -29,15 +28,15 @@ public class UsuarioService {
         return dto;
     }
 
-    public UsuarioDtoRegistros buscarUsuarioPorPessoa(int pessoaId) {
+    public UsuarioDtoListar buscarUsuarioPorPessoa(int pessoaId) {
         Usuario usuario = usuarioRepository.findByPessoaId(pessoaId)
                 .orElseThrow(() -> new ResourceNotFoundException(pessoaId));
-        return new UsuarioDtoRegistros(usuario);
+        return new UsuarioDtoListar(usuario);
     }
 
-    public UsuarioDtoRegistros buscarUsuarioPorId(int id) {
+    public UsuarioDtoListar buscarUsuarioPorId(int id) {
         Usuario u = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-        return new UsuarioDtoRegistros(u);
+        return new UsuarioDtoListar(u);
     }
 
     @Transactional

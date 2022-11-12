@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoEditar;
 import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoListar;
-import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoRegistros;
 import com.controledejornada.registrodeponto.services.UsuarioService;
 
 @RestController
@@ -30,7 +29,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{idUsuario}")
-    public ResponseEntity<UsuarioDtoRegistros> buscarUsuarioPorPessoa(@PathVariable int idUsuario) {
+    public ResponseEntity<UsuarioDtoListar> buscarUsuarioPorId(@PathVariable int idUsuario) {
         return ResponseEntity.ok().body(usuarioService.buscarUsuarioPorId(idUsuario));
     }
 
