@@ -3,8 +3,11 @@ package com.controledejornada.registrodeponto.model.dtos.jornada;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.controledejornada.registrodeponto.model.Jornada;
+import com.controledejornada.registrodeponto.model.dtos.registro.RegistroDtoListar;
 import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoListar;
 
 public class JornadaDtoListar implements Serializable {
@@ -13,6 +16,7 @@ public class JornadaDtoListar implements Serializable {
     private LocalDate data;
     private UsuarioDtoListar usuario;
     private LocalTime horasTrabalhadas;
+    private List<RegistroDtoListar> registros;
 
     public JornadaDtoListar() {
     }
@@ -29,6 +33,7 @@ public class JornadaDtoListar implements Serializable {
         data = jornada.getData();
         usuario = new UsuarioDtoListar(jornada.getUsuario());
         horasTrabalhadas = jornada.getHorasTrabalhadas();
+        registros = jornada.getRegistros().stream().map(r -> new RegistroDtoListar(r)).collect(Collectors.toList());
     }
 
     public int getId() {
@@ -51,4 +56,7 @@ public class JornadaDtoListar implements Serializable {
         return horasTrabalhadas;
     }
 
+    public List<RegistroDtoListar> getRegistros() {
+        return registros;
+    }
 }
