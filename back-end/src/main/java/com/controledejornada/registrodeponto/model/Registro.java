@@ -49,8 +49,16 @@ public class Registro implements Serializable, Comparable<Registro> {
         return horarioRegistro;
     }
 
+    public void setHorarioRegistro(LocalTime horarioRegistro) {
+        this.horarioRegistro = horarioRegistro;
+    }
+
     public String getTipoRegistro() {
         return tipoRegistro;
+    }
+
+    public void setTipoRegistro(String tipoRegistro) {
+        this.tipoRegistro = tipoRegistro;
     }
 
     @Override

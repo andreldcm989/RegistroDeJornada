@@ -52,8 +52,18 @@ public class JornadaService {
                     .salvarRegistro(new Registro(j, registro.getHorarioRegistro(), registro.getTipoRegistro()));
             j.calcularHorasTrabalhadas();
             jornadaRepository.save(j);
-            JornadaDtoListar dto = new JornadaDtoListar(j);
-            return dto;
+            return new JornadaDtoListar(j);
+        }
+        throw new ResourceNotFoundException(idJornada);
+    }
+
+    public JornadaDtoListar editarRegistro(int idJornada, int idRegistro, RegistroDtoSalvar registro) {
+        Jornada j = jornadaRepository.getReferenceById(idJornada);
+        if (j != null) {
+            registroService.editarRegistro(idRegistro, registro);
+            j.calcularHorasTrabalhadas();
+            jornadaRepository.save(j);
+            return new JornadaDtoListar(j);
         }
         throw new ResourceNotFoundException(idJornada);
     }
