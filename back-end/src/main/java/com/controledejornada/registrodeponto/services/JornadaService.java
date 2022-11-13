@@ -9,9 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.controledejornada.registrodeponto.model.Jornada;
+import com.controledejornada.registrodeponto.model.Registro;
 import com.controledejornada.registrodeponto.model.dtos.jornada.JornadaDtoListar;
+import com.controledejornada.registrodeponto.model.dtos.registro.RegistroDtoSalvar;
 import com.controledejornada.registrodeponto.repository.JornadaRepository;
-import com.controledejornada.registrodeponto.repository.RegistroRepository;
 import com.controledejornada.registrodeponto.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -21,10 +22,7 @@ public class JornadaService {
     private JornadaRepository jornadaRepository;
 
     @Autowired
-    private RegistroRepository registroRepository;
-
-    @Autowired
-    private UsuarioService usuarioService;
+    private RegistroService registroService;
 
     public List<JornadaDtoListar> listarJornadasPorUsuarioEData(int usuarioId, String inicio, String fim) {
         LocalDate i = LocalDate.parse(inicio, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
@@ -47,18 +45,17 @@ public class JornadaService {
                 .orElseThrow(() -> new ResourceNotFoundException(jornadaId));
     }
 
-    // public Registro adicionarRegistro(int usuarioId, int idJornada,
-    // RegistroDtoSalvar registro) {
-    // Jornada j = jornadaRepository.getReferenceById(idJornada);
-    // if (j == null) {
-    // j = new Jornada(LocalDate.now(),
-    // usuarioService.buscarUsuarioPorId(usuarioId));
-    // }
-    // Registro r = new Registro(j, registro.getHorarioRegistro(),
-    // registro.getTipoRegistro());
-    // registroRepository.save(r);
-    // j.calcularHorasTrabalhadas();
-    // jornadaRepository.save(j);
-    // return r;
-    // }
+    public JornadaDtoListar adicionarRegistro(int idJornada, RegistroDtoSalvar registro) {
+        Jornada j = jornadaRepository.getReferenceById(idJornada);
+        if (j != null) {
+            registroService
+                    .salvarRegistro(new Registro(j, registro.getHorarioRegistro(), registro.getTipoRegistro()));
+            j.calcularHorasTrabalhadas();
+            jornadaRepository.save(j);
+            JornadaDtoListar dto = new JornadaDtoListar(j);
+            return dto;
+        }
+        throw new ResourceNotFoundException(idJornada);
+    }
+
 }
