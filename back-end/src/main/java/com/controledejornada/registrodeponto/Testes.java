@@ -51,23 +51,23 @@ public class Testes implements CommandLineRunner {
 
         jornadaRepository.saveAll(Arrays.asList(j1, j2, j3, j4));
 
-        // Registro r1 = new Registro(j1, LocalTime.of(8, 0, 0), "entrada");
-        // Registro r2 = new Registro(j1, LocalTime.of(12, 0, 0), "saida");
-        // Registro r3 = new Registro(j1, LocalTime.of(17, 0, 0), "saida");
-        // Registro r4 = new Registro(j1, LocalTime.of(13, 0, 0), "entrada");
-        // RegistroDtoSalvar r5 = new RegistroDtoSalvar(j1.getId(), LocalTime.of(18, 0,
-        // 0), "entrada");
+        Registro r1 = new Registro(j1, LocalTime.of(8, 0, 0), "entrada");
+        Registro r2 = new Registro(j1, LocalTime.of(12, 0, 0), "saida");
+        Registro r3 = new Registro(j1, LocalTime.of(17, 0, 0), "saida");
+        Registro r4 = new Registro(j1, LocalTime.of(13, 0, 0), "entrada");
+        RegistroDtoSalvar r5 = new RegistroDtoSalvar(j1.getId(), LocalTime.of(18, 0,
+                0), "entrada");
 
-        // registroRepository.saveAll(
-        // Arrays.asList(r4, r2, r1, r3, new Registro(j1, r5.getHorarioRegistro(),
-        // r5.getTipoRegistro())));
-        // j1.addRegistro(r1);
-        // j1.addRegistro(r2);
-        // j1.addRegistro(r3);
-        // j1.addRegistro(r4);
+        registroRepository.saveAll(
+                Arrays.asList(r4, r2, r1, r3, new Registro(j1, r5.getHorarioRegistro(),
+                        r5.getTipoRegistro())));
+        j1.addRegistro(r1);
+        j1.addRegistro(r2);
+        j1.addRegistro(r3);
+        j1.addRegistro(r4);
 
-        // j1.calcularHorasTrabalhadas();
-        // jornadaRepository.save(j1);
+        j1.calcularHorasTrabalhadas();
+        jornadaRepository.save(j1);
 
         // List<Registro> registros = registroRepository.findByUsuario(u1.getId());
 

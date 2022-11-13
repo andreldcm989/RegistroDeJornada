@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.controledejornada.registrodeponto.model.Jornada;
 import com.controledejornada.registrodeponto.model.Registro;
+import com.controledejornada.registrodeponto.model.dtos.jornada.JornadaDtoListar;
 import com.controledejornada.registrodeponto.model.dtos.registro.RegistroDtoSalvar;
 import com.controledejornada.registrodeponto.services.JornadaService;
 
@@ -25,12 +26,12 @@ public class JornadaController {
     private JornadaService jornadaService;
 
     @GetMapping
-    public ResponseEntity<List<Jornada>> listarJornadas() {
+    public ResponseEntity<List<JornadaDtoListar>> listarJornadas() {
         return ResponseEntity.ok().body(jornadaService.listarJornadas());
     }
 
     @GetMapping("/{usuarioId}")
-    public ResponseEntity<List<Jornada>> listarJornadasPorUsuarioEData(@PathVariable int usuarioId,
+    public ResponseEntity<List<JornadaDtoListar>> listarJornadasPorUsuarioEData(@PathVariable int usuarioId,
             @RequestParam(value = "inicio") String inicio, @RequestParam(value = "fim") String fim) {
         return ResponseEntity.ok().body(jornadaService.listarJornadasPorUsuarioEData(usuarioId, inicio, fim));
     }
