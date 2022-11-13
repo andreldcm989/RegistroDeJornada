@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.controledejornada.registrodeponto.model.Jornada;
@@ -66,6 +67,14 @@ public class JornadaService {
             return new JornadaDtoListar(j);
         }
         throw new ResourceNotFoundException(idJornada);
+    }
+
+    public void excluirJornada(int idJornada) {
+        try {
+            jornadaRepository.deleteById(idJornada);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(idJornada);
+        }
     }
 
 }

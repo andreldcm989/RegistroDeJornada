@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,7 +33,7 @@ public class Jornada implements Serializable {
     private Usuario usuario;
     private LocalTime horasTrabalhadas;
 
-    @OneToMany(mappedBy = "jornada")
+    @OneToMany(mappedBy = "jornada", cascade = CascadeType.ALL)
     private List<Registro> registros = new ArrayList<>();
 
     public Jornada() {
