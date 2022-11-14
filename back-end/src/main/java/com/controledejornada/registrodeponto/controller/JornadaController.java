@@ -42,10 +42,10 @@ public class JornadaController {
         return ResponseEntity.ok().body(jornadaService.buscarJornadaPorIdEUsuario(jornadaId, usuarioId));
     }
 
-    @PostMapping("/{idJornada}")
-    public ResponseEntity<JornadaDtoListar> adicionarRegistro(@PathVariable int idJornada,
+    @PostMapping("/{idUsuario}")
+    public ResponseEntity<JornadaDtoListar> adicionarRegistro(@PathVariable int idUsuario, @RequestParam String data,
             @RequestBody RegistroDtoSalvar registro) {
-        return ResponseEntity.ok().body(jornadaService.adicionarRegistro(idJornada, registro));
+        return ResponseEntity.ok().body(jornadaService.adicionarRegistro(data, idUsuario, registro));
     }
 
     @PutMapping("/{idJornada}/{idRegistro}")
