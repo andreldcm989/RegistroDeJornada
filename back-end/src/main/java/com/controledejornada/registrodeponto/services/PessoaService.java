@@ -3,9 +3,10 @@ package com.controledejornada.registrodeponto.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,7 +61,7 @@ public class PessoaService {
         try {
             usuarioService.excluirUsuario(repository.getReferenceById(id).getUsuario().getId());
             repository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
+        } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(id);
         }
     }

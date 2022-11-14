@@ -1,7 +1,6 @@
 package com.controledejornada.registrodeponto.model.dtos.pessoa;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoSalvar;
 
@@ -9,14 +8,14 @@ public class PessoaDtoSalvar implements Serializable {
 
     private String nome;
     private String cpf;
-    private LocalDate nascimento;
+    private String nascimento;
     private String email;
     private UsuarioDtoSalvar usuario;
 
     public PessoaDtoSalvar() {
     }
 
-    public PessoaDtoSalvar(String nome, String cpf, LocalDate nascimento, String email, UsuarioDtoSalvar usuario) {
+    public PessoaDtoSalvar(String nome, String cpf, String nascimento, String email, UsuarioDtoSalvar usuario) {
         this.nome = nome;
         this.cpf = cpf;
         this.nascimento = nascimento;
@@ -36,11 +35,11 @@ public class PessoaDtoSalvar implements Serializable {
         return cpf;
     }
 
-    public LocalDate getNascimento() {
+    public String getNascimento() {
         return nascimento;
     }
 
-    public void setNascimento(LocalDate nascimento) {
+    public void setNascimento(String nascimento) {
         this.nascimento = nascimento;
     }
 
