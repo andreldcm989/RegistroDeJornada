@@ -12,7 +12,6 @@ import com.controledejornada.registrodeponto.model.Jornada;
 import com.controledejornada.registrodeponto.model.Pessoa;
 import com.controledejornada.registrodeponto.model.Registro;
 import com.controledejornada.registrodeponto.model.Usuario;
-import com.controledejornada.registrodeponto.model.dtos.registro.RegistroDtoSalvar;
 import com.controledejornada.registrodeponto.repository.JornadaRepository;
 import com.controledejornada.registrodeponto.repository.PessoaRepository;
 import com.controledejornada.registrodeponto.repository.RegistroRepository;
@@ -55,12 +54,9 @@ public class Testes implements CommandLineRunner {
         Registro r2 = new Registro(j1, LocalTime.of(12, 0, 0), "saida");
         Registro r3 = new Registro(j1, LocalTime.of(17, 0, 0), "saida");
         Registro r4 = new Registro(j1, LocalTime.of(13, 0, 0), "entrada");
-        RegistroDtoSalvar r5 = new RegistroDtoSalvar(j1.getId(), LocalTime.of(18, 0,
-                0), "entrada");
 
         registroRepository.saveAll(
-                Arrays.asList(r4, r2, r1, r3, new Registro(j1, r5.getHorarioRegistro(),
-                        r5.getTipoRegistro())));
+                Arrays.asList(r4, r2, r1, r3));
         j1.addRegistro(r1);
         j1.addRegistro(r2);
         j1.addRegistro(r3);
