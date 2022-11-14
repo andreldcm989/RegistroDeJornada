@@ -1,11 +1,12 @@
 package com.controledejornada.registrodeponto.services;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,11 +50,18 @@ public class PessoaService {
 
     @Transactional
     public PessoaDtoListar editarPessoa(int id, PessoaDtoEditar pessoa) {
-        Pessoa p = repository.getReferenceById(id);
-        BeanUtils.copyProperties(pessoa, p);
-        repository.save(p);
-        PessoaDtoListar dto = new PessoaDtoListar(p);
-        return dto;
+        try {
+            Pessoa p = repository.getReferenceById(id);
+            p.setNome(pessoa.getNome());
+            p.setCpf(pessoa.getCpf());
+            p.setNascimento(LocalDate.parse(pessoa.getNascimento(), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            p.setEmail(pessoa.getEmail());
+            repository.save(p);
+            PessoaDtoListar dto = new PessoaDtoListar(p);
+            return dto;
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     @Transactional

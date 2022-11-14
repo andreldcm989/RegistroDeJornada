@@ -1,7 +1,6 @@
 package com.controledejornada.registrodeponto.model.dtos.pessoa;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -12,14 +11,14 @@ public class PessoaDtoEditar implements Serializable {
     @NotEmpty
     private String cpf;
     @NotEmpty
-    private LocalDate nascimento;
+    private String nascimento;
     @NotEmpty
     private String email;
 
     public PessoaDtoEditar() {
     }
 
-    public PessoaDtoEditar(String nome, String cpf, LocalDate nascimento, String email) {
+    public PessoaDtoEditar(String nome, String cpf, String nascimento, String email) {
         this.nome = nome;
         this.cpf = cpf;
         this.nascimento = nascimento;
@@ -38,11 +37,11 @@ public class PessoaDtoEditar implements Serializable {
         return cpf;
     }
 
-    public LocalDate getNascimento() {
+    public String getNascimento() {
         return nascimento;
     }
 
-    public void setNascimento(LocalDate nascimento) {
+    public void setNascimento(String nascimento) {
         this.nascimento = nascimento;
     }
 
