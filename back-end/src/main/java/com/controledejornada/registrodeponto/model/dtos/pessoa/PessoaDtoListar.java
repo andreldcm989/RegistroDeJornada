@@ -1,7 +1,7 @@
 package com.controledejornada.registrodeponto.model.dtos.pessoa;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import com.controledejornada.registrodeponto.model.Pessoa;
 import com.controledejornada.registrodeponto.model.dtos.usuario.UsuarioDtoListar;
@@ -11,14 +11,14 @@ public class PessoaDtoListar implements Serializable {
     private int id;
     private String nome;
     private String cpf;
-    private LocalDate nascimento;
+    private String nascimento;
     private String email;
     private UsuarioDtoListar usuario;
 
     public PessoaDtoListar() {
     }
 
-    public PessoaDtoListar(String nome, String cpf, LocalDate nascimento, String email, UsuarioDtoListar usuario) {
+    public PessoaDtoListar(String nome, String cpf, String nascimento, String email, UsuarioDtoListar usuario) {
         this.nome = nome;
         this.cpf = cpf;
         this.nascimento = nascimento;
@@ -30,7 +30,7 @@ public class PessoaDtoListar implements Serializable {
         id = pessoa.getId();
         nome = pessoa.getNome();
         cpf = pessoa.getCpf();
-        nascimento = pessoa.getNascimento();
+        nascimento = pessoa.getNascimento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         email = pessoa.getEmail();
         usuario = new UsuarioDtoListar(pessoa.getUsuario());
     }
@@ -51,11 +51,11 @@ public class PessoaDtoListar implements Serializable {
         return cpf;
     }
 
-    public LocalDate getNascimento() {
+    public String getNascimento() {
         return nascimento;
     }
 
-    public void setNascimento(LocalDate nascimento) {
+    public void setNascimento(String nascimento) {
         this.nascimento = nascimento;
     }
 
