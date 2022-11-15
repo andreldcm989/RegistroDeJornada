@@ -33,7 +33,8 @@ public class JornadaController {
 
     @GetMapping("/{usuarioId}")
     public ResponseEntity<List<JornadaDtoListar>> listarJornadasPorUsuarioEData(@PathVariable int usuarioId,
-            @RequestParam(value = "inicio") String inicio, @RequestParam(value = "fim") String fim) {
+            @RequestParam(value = "inicio", required = false) String inicio,
+            @RequestParam(value = "fim", required = false) String fim) {
         return ResponseEntity.ok().body(jornadaService.listarJornadasPorUsuarioEData(usuarioId, inicio, fim));
     }
 
@@ -48,10 +49,11 @@ public class JornadaController {
         return ResponseEntity.ok().body(jornadaService.adicionarRegistro(data, idUsuario, registro));
     }
 
-    @PutMapping("/{idJornada}/{idRegistro}")
-    public ResponseEntity<JornadaDtoListar> editarRegistro(@PathVariable int idJornada, @PathVariable int idRegistro,
+    @PutMapping("/{usuarioId}/{jornadaId}")
+    public ResponseEntity<JornadaDtoListar> editarRegistro(@PathVariable int usuarioId, @PathVariable int jornadaId,
+            @RequestParam int idRegistro,
             @RequestBody RegistroDtoSalvar registro) {
-        return ResponseEntity.ok().body(jornadaService.editarRegistro(idJornada, idRegistro, registro));
+        return ResponseEntity.ok().body(jornadaService.editarRegistro(jornadaId, idRegistro, registro));
     }
 
     @DeleteMapping("/{idJornada}")

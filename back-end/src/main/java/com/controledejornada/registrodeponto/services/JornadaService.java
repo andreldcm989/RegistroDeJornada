@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -30,8 +32,11 @@ public class JornadaService {
     private UsuarioRepository usuarioRepository;
 
     public List<JornadaDtoListar> listarJornadasPorUsuarioEData(int usuarioId, String inicio, String fim) {
-        LocalDate i = LocalDate.parse(inicio, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        LocalDate f = LocalDate.parse(fim, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        if (!usuarioRepository.existsById(usuarioId))
+            throw new ResourceNotFoundException(usuarioId);
+        LocalDate i = inicio != null ? LocalDate.parse(inicio, DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                : LocalDate.now().minusDays(30);
+        LocalDate f = fim != null ? LocalDate.parse(fim, DateTimeFormatter.ofPattern("dd/MM/yyyy")) : LocalDate.now();
         return jornadaRepository.findByUsuarioIdAndDataBetween(usuarioId, i, f).stream()
                 .map(j -> new JornadaDtoListar(j)).collect(Collectors.toList());
     }
@@ -57,26 +62,28 @@ public class JornadaService {
 
     public JornadaDtoListar adicionarRegistro(String data, int idUsuario, RegistroDtoSalvar registro) {
         LocalDate dt = LocalDate.parse(data, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        if (jornadaRepository.getReferenceByData(dt) == null) {
-            salvarJornada(data, idUsuario);
-        }
         Jornada j = jornadaRepository.getReferenceByData(dt);
-        registroService
-                .salvarRegistro(new Registro(j, registro.getHorarioRegistro(), registro.getTipoRegistro()));
+        if (j == null) {
+            salvarJornada(data, idUsuario);
+            j = jornadaRepository.getReferenceByData(dt);
+        }
+        Registro reg = new Registro(j, registro.getHorarioRegistro(), registro.getTipoRegistro());
+        registroService.salvarRegistro(reg);
         j.calcularHorasTrabalhadas();
         jornadaRepository.save(j);
         return new JornadaDtoListar(j);
     }
 
     public JornadaDtoListar editarRegistro(int idJornada, int idRegistro, RegistroDtoSalvar registro) {
-        Jornada j = jornadaRepository.getReferenceById(idJornada);
-        if (j != null) {
+        try {
+            Jornada j = jornadaRepository.getReferenceById(idJornada);
             registroService.editarRegistro(idRegistro, registro);
             j.calcularHorasTrabalhadas();
             jornadaRepository.save(j);
             return new JornadaDtoListar(j);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(idJornada);
         }
-        throw new ResourceNotFoundException(idJornada);
     }
 
     public void excluirJornada(int idJornada) {
