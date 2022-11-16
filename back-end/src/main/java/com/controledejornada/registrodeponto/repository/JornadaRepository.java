@@ -16,6 +16,6 @@ public interface JornadaRepository extends JpaRepository<Jornada, Integer> {
 
     Optional<Jornada> findByIdAndUsuarioId(int id, int usuarioId);
 
-    Jornada getReferenceByData(LocalDate data);
+    Jornada getReferenceByDataAndUsuarioId(LocalDate data, int usuarioId);
 
 }

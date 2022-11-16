@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.controledejornada.registrodeponto.model.Jornada;
 import com.controledejornada.registrodeponto.model.dtos.jornada.JornadaDtoListar;
 import com.controledejornada.registrodeponto.model.dtos.registro.RegistroDtoSalvar;
 import com.controledejornada.registrodeponto.services.JornadaService;
@@ -39,14 +38,16 @@ public class JornadaController {
     }
 
     @GetMapping("/{usuarioId}/{jornadaId}")
-    public ResponseEntity<Jornada> listarJornadaPorId(@PathVariable int usuarioId, @PathVariable int jornadaId) {
+    public ResponseEntity<JornadaDtoListar> listarJornadaPorId(@PathVariable int usuarioId,
+            @PathVariable int jornadaId) {
         return ResponseEntity.ok().body(jornadaService.buscarJornadaPorIdEUsuario(jornadaId, usuarioId));
     }
 
     @PostMapping("/{idUsuario}")
-    public ResponseEntity<JornadaDtoListar> adicionarRegistro(@PathVariable int idUsuario, @RequestParam String data,
+    public ResponseEntity<Object> adicionarRegistro(@PathVariable int idUsuario, @RequestParam String data,
             @RequestBody RegistroDtoSalvar registro) {
-        return ResponseEntity.ok().body(jornadaService.adicionarRegistro(data, idUsuario, registro));
+        jornadaService.adicionarRegistro(data, idUsuario, registro);
+        return ResponseEntity.ok().body("Registro inserido com sucesso!");
     }
 
     @PutMapping("/{usuarioId}/{jornadaId}")

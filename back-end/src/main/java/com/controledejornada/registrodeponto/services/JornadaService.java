@@ -3,6 +3,7 @@ package com.controledejornada.registrodeponto.services;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
@@ -38,7 +39,7 @@ public class JornadaService {
                 : LocalDate.now().minusDays(30);
         LocalDate f = fim != null ? LocalDate.parse(fim, DateTimeFormatter.ofPattern("dd/MM/yyyy")) : LocalDate.now();
         return jornadaRepository.findByUsuarioIdAndDataBetween(usuarioId, i, f).stream()
-                .map(j -> new JornadaDtoListar(j)).collect(Collectors.toList());
+                .map(JornadaDtoListar::new).toList();
     }
 
     public Jornada salvarJornada(String data, int usuarioId) {
@@ -55,23 +56,31 @@ public class JornadaService {
         return jornadaRepository.findAll().stream().map(j -> new JornadaDtoListar(j)).collect(Collectors.toList());
     }
 
-    public Jornada buscarJornadaPorIdEUsuario(int jornadaId, int usuarioId) {
-        return jornadaRepository.findByIdAndUsuarioId(jornadaId, usuarioId)
-                .orElseThrow(() -> new ResourceNotFoundException(jornadaId));
+    public JornadaDtoListar buscarJornadaPorId(int id) {
+        return new JornadaDtoListar(jornadaRepository.findById(id).get());
     }
 
-    public JornadaDtoListar adicionarRegistro(String data, int idUsuario, RegistroDtoSalvar registro) {
-        LocalDate dt = LocalDate.parse(data, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        Jornada j = jornadaRepository.getReferenceByData(dt);
-        if (j == null) {
-            salvarJornada(data, idUsuario);
-            j = jornadaRepository.getReferenceByData(dt);
+    public JornadaDtoListar buscarJornadaPorIdEUsuario(int jornadaId, int usuarioId) {
+        Jornada jornada = jornadaRepository.findByIdAndUsuarioId(jornadaId, usuarioId)
+                .orElseThrow(() -> new ResourceNotFoundException(jornadaId));
+        return new JornadaDtoListar(jornada);
+    }
+
+    public void adicionarRegistro(String data, int idUsuario, RegistroDtoSalvar registro) {
+        try {
+            LocalDate dt = LocalDate.parse(data, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            Jornada j = jornadaRepository.getReferenceByDataAndUsuarioId(dt, idUsuario);
+            if (j == null) {
+                salvarJornada(data, idUsuario);
+                j = jornadaRepository.getReferenceByDataAndUsuarioId(dt, idUsuario);
+            }
+            Registro reg = new Registro(j, registro.getHorarioRegistro(), registro.getTipoRegistro());
+            registroService.salvarRegistro(reg);
+            j.calcularHorasTrabalhadas();
+            jornadaRepository.save(j);
+        } catch (EntityNotFoundException | NoSuchElementException e) {
+            throw new ResourceNotFoundException(idUsuario);
         }
-        Registro reg = new Registro(j, registro.getHorarioRegistro(), registro.getTipoRegistro());
-        registroService.salvarRegistro(reg);
-        j.calcularHorasTrabalhadas();
-        jornadaRepository.save(j);
-        return new JornadaDtoListar(j);
     }
 
     public JornadaDtoListar editarRegistro(int idJornada, int idRegistro, RegistroDtoSalvar registro) {
